@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/commits_view_height"
+    android:layout_margin="@dimen/app_default_margin_half"
+    android:background="@color/purple_200"
+    android:padding="@dimen/app_default_margin">
+
+    <ImageView
+        android:id="@+id/bar"
+        android:layout_width="@dimen/commits_bar_width"
+        android:layout_height="1dp"
+        android:background="@color/teal_200"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/commits_number"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="@dimen/app_default_title_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10 commits" />
+
+    <TextView
+        android:id="@+id/month"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/app_default_margin_half"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="@dimen/app_default_title_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        tools:text="November" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="@dimen/commits_view_guideline_height" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

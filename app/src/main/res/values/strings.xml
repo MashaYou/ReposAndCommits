@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">XCompanyAssignment</string>
+    <string name="details_screen_commits_number">%d commits</string>
+    <string name="list_screen_empty_text">There is no repositories yet</string>
+    <string name="default_error_text">Something went wrong. Try again.</string>
+    <string name="common_error_btn">OK</string>
+    <string name="repos_list_title">Repositories</string>
+</resources>
