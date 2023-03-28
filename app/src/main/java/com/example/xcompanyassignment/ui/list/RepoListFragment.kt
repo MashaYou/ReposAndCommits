@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.xcompanyassignment.R
 import com.example.xcompanyassignment.databinding.FragmentRepoListBinding
 import com.example.xcompanyassignment.ui.BaseFragment
+import com.example.xcompanyassignment.ui.RepoListRouter
 import com.example.xcompanyassignment.ui.details.RepoDetailsArgs
 import com.example.xcompanyassignment.ui.makeVisibleOrGone
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,9 +19,9 @@ internal class RepoListFragment : BaseFragment<RepoListViewModel, FragmentRepoLi
     inflate = FragmentRepoListBinding::inflate,
 ) {
 
-    private val adapter = RepoListAdapter()
     override val viewModel: RepoListViewModel by viewModels()
-
+    private val adapter = RepoListAdapter()
+    private val router = RepoListRouter(this)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentRepoListBinding.bind(view)
         binding?.apply {
@@ -32,24 +33,19 @@ internal class RepoListFragment : BaseFragment<RepoListViewModel, FragmentRepoLi
             this@RepoListFragment.emptyView = emptyText
         }
 
-        adapter.onItemClickListener = { navToDetails(it) }
+        adapter.onItemClickListener = { rowItem ->
+            binding?.swipeContainer?.isRefreshing = false
+            router.navToDetails(
+                item = rowItem,
+            )
+        }
         viewModel.itemsLiveData.observe(viewLifecycleOwner, ::setItems)
+        viewModel.loadItems()
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun navToDetails(item: RepoRowItem) {
-        binding?.swipeContainer?.isRefreshing = false
-        findNavController().navigate(
-            RepoListFragmentDirections.actionRepoListFragmentToRepoDetailsFragment(
-                RepoDetailsArgs(
-                    item.name,
-                    item.description,
-                )
-            )
-        )
-    }
-
     private fun setItems(list: List<RepoRowItem>?) {
+        progress?.makeVisibleOrGone(false)
         binding?.swipeContainer?.isRefreshing = false
         list?.let {
             adapter.submitList(it)

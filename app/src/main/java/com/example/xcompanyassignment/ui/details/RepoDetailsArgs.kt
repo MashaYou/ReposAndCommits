@@ -5,7 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class RepoDetailsArgs(
-    val repositoryName: String,
+    val repoId: Long,
+    val repoName: String,
     val description: String,
 ) : Parcelable {
 

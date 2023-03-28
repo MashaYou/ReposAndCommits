@@ -1,57 +1,74 @@
 package com.example.xcompanyassignment.data
 
+import com.example.xcompanyassignment.data.local.CommitEntity
 import com.example.xcompanyassignment.data.local.RepoEntity
 import com.example.xcompanyassignment.data.remote.CommitDetailsDto
 import com.example.xcompanyassignment.data.remote.RepositoryDto
-import com.example.xcompanyassignment.domain.Commit
+import com.example.xcompanyassignment.domain.CommitData
 import com.example.xcompanyassignment.domain.RepoData
-import okhttp3.internal.toLongOrDefault
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-internal fun RepositoryDto.toData(): RepoData {
-    return with(this) {
-        RepoData(
-            id = id,
-            name = name,
-            fullName = fullName,
-            description = description,
-            imageUrl = owner.imageUrl,
-        )
-    }
+internal fun toEntity(dto: RepositoryDto) = with(dto) {
+    RepoEntity(
+        id = 0, // SQLite generates identifier automatically if ID = 0
+        name = name,
+        fullName = fullName,
+        description = description,
+        imageUrl = owner.imageUrl,
+    )
 }
 
-internal fun CommitDetailsDto.toData(): Commit {
-    return with(this.commit) {
-        Commit(
-            message = message,
-            name = author.name,
-            email = author.email,
-            date = LocalDate.parse(author.date, DateTimeFormatter.ISO_DATE_TIME),
-        )
-    }
+internal fun CommitDetailsDto.toEntity(repoId: Long) = with(this.commit) {
+    CommitEntity(
+        id = 0, // SQLite generates identifier automatically if ID = 0
+        sha = sha,
+        repoId = repoId,
+        message = message,
+        name = author.name,
+        email = author.email,
+        date = author.date,
+    )
 }
 
-internal fun RepoEntity.toData(): RepoData {
-    return with(this) {
-        RepoData(
-            id = id.toString(),
-            name = name,
-            fullName = fullName,
-            description = description,
-            imageUrl = imageUrl,
-        )
-    }
+internal fun toData(entity: RepoEntity) = with(entity) {
+    RepoData(
+        id = id,
+        name = name,
+        fullName = fullName,
+        description = description,
+        imageUrl = imageUrl,
+    )
+}
+internal fun toData(entity: CommitEntity) = with(entity) {
+    CommitData(
+        id = id,
+        sha = sha,
+        repoId = repoId,
+        message = message,
+        name = name,
+        email = email,
+        date = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME),
+    )
 }
 
-internal fun RepoData.toEntity(): RepoEntity {
-    return with(this) {
-        RepoEntity(
-            id = id.toLongOrDefault(0),
-            name = name,
-            fullName = fullName,
-            description = description,
-            imageUrl = imageUrl,
-        )
-    }
+internal fun toData(dto: RepositoryDto) = with(dto) {
+    RepoData(
+        id = id.toLong(),
+        name = name,
+        fullName = fullName,
+        description = description,
+        imageUrl = owner.imageUrl,
+    )
+}
+internal fun toData(dto: CommitDetailsDto, repoId: Long) = with(dto) {
+    CommitData(
+        id = 0, // SQLite generates identifier automatically if ID = 0
+        sha = sha,
+        repoId = repoId,
+        message = commit.message,
+        name = commit.author.name,
+        email = commit.author.email,
+        date = LocalDate.parse(commit.author.date, DateTimeFormatter.ISO_DATE_TIME),
+    )
 }

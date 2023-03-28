@@ -25,8 +25,5 @@ internal abstract class BaseViewModel : ViewModel() {
         viewModelDisposable.clear()
     }
 
-    protected fun Disposable.disposeOnCleared(): Disposable =
-        this.apply {
-            viewModelDisposable.add(this)
-        }
+    protected fun Disposable.disposeOnCleared() = viewModelDisposable.add(this)
 }

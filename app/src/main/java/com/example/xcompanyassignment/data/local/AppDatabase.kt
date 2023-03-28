@@ -7,8 +7,10 @@ import androidx.room.RoomDatabase
     version = 1,
     entities = [
         RepoEntity::class,
+        CommitEntity::class,
     ],
 )
 internal abstract class AppDatabase : RoomDatabase() {
     abstract fun getRepositoriesDao(): ReposDao
+    abstract fun getCommitsDao(): CommitsDao
 }

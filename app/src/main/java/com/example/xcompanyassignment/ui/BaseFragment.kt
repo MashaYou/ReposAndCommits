@@ -31,21 +31,17 @@ internal abstract class BaseFragment<VM : BaseViewModel, B : ViewBinding>(
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.progress.observe(viewLifecycleOwner, ::showProgress)
-        viewModel.error.observe(viewLifecycleOwner, ::showError)
-    }
-
-    private fun showProgress(show: Boolean) {
+    protected fun showProgress(show: Boolean) {
         progress?.makeVisibleOrGone(show)
     }
 
-    private fun showError(message: String?) {
-        message?.let {
-            val dialog = SimpleErrorDialog()
-            dialog.message = message
-            dialog.show(childFragmentManager, SimpleErrorDialog.TAG)
-            dialog.setFragmentResultListener(SimpleErrorDialog.TAG) { _, _ ->
+    protected fun showError(message: String?) {
+        if (message == null) return
+
+        SimpleErrorDialog().apply {
+            this.message = message
+            show(childFragmentManager, SimpleErrorDialog.TAG)
+            setFragmentResultListener(SimpleErrorDialog.TAG) { _, _ ->
                 viewModel.onDialogClosed()
             }
         }

@@ -1,18 +1,21 @@
 package com.example.xcompanyassignment.domain
 
+import com.example.xcompanyassignment.data.RepoRepository
 import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
 internal class RepoInteractor @Inject constructor(
-    private val repoListUseCase: GetRepoListUseCase,
-    private val repoDetailsUseCase: GetRepoDetailsUseCase,
+    private val repository: RepoRepository,
 ) {
-    fun getRepositoryList(): Observable<List<RepoData>> {
-        return repoListUseCase.getRepositories()
+    fun getRepositoryList(): Single<List<RepoData>> {
+        return repository.getRepositories()
     }
 
-    fun getRepositoryDetails(repositoryFullName: String): Single<List<Commit>> {
-        return repoDetailsUseCase.getRepositoryDetails(repositoryFullName)
+    fun getRepositoryDetails(
+        repositoryFullName:
+        String, repoId: Long
+    ): Single<List<CommitData>> {
+        return repository.getRepositoryDetails(repositoryFullName, repoId)
     }
 }

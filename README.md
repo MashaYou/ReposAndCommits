@@ -3,7 +3,7 @@
 The aim of this test assignment is to build an App that connects to the Github API, shows the public repositories of a particular user and then retrieves their respective last commits.  
   
 ## Prerequisites  
-Please create an Android Studio / Gradle Project, upon completion of the task upload it to any file sharing resource of your choice (ex. Google Drive, Dropbox etc.) and share the link with us in a response email. Do not upload the solution to a public GitHub repository (or any other code hosting solution). The Project needs to compile and be executable on a state of the art Android Phone. Use SDK Level 21 and above.  
+Please create an Android Studio / Gradle Project, upon completion of the task upload it to any file sharing resource of your choice (ex. Google Drive, Dropbox etc.) and share the link with us in a response email. The Project needs to compile and be executable on a state of the art Android Phone. Use SDK Level 21 and above.  
 Try to keep the project as vanilla and as possible. However, the following 3rd party libraries are allowed:  
 Retrofit / Volley, RxJava / Coroutines, Dagger 2 / Hilt. We do not accept solutions executed with Jetpack Compose.  
 Please do not spend more than ca. 6 hours on the assignment. Incomplete solutions are also acceptable - the task is designed that way.  

@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.example.xcompanyassignment.domain.Commit
+import com.example.xcompanyassignment.domain.CommitData
 import com.example.xcompanyassignment.domain.RepoInteractor
 import com.example.xcompanyassignment.ui.BaseViewModel
 import com.example.xcompanyassignment.ui.getMonthName
@@ -20,8 +20,8 @@ internal class RepoDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
 
-    private val _Monthly_commits: MutableLiveData<MonthStat> = MutableLiveData()
-    val monthStat: LiveData<MonthStat> = _Monthly_commits
+    private val _monthStat: MutableLiveData<MonthStat> = MutableLiveData()
+    val monthStat: LiveData<MonthStat> = _monthStat
 
     private val _repositoryName: MutableLiveData<String> = MutableLiveData()
     val repositoryName: LiveData<String> = _repositoryName
@@ -32,24 +32,23 @@ internal class RepoDetailsViewModel @Inject constructor(
     private val args: RepoDetailsArgs? = savedStateHandle[RepoDetailsArgs.KEY]
 
     init {
-        _repositoryName.value = args?.repositoryName
+        _repositoryName.value = args?.repoName
         _description.value = args?.description
         loadItems()
     }
 
     private fun loadItems() {
         _progress.value = true
-        args?.repositoryName?.let { repoName ->
-            repoInteractor.getRepositoryDetails(repoName)
-                .map { commits -> commits.toMonthStats() }
-                .flatMapObservable { list ->
-                    Observable.fromIterable(list)
+        args?.apply {
+            repoInteractor.getRepositoryDetails(repoName, repoId)
+                .flatMapObservable { commits ->
+                    Observable.fromIterable(commits.toMonthStats())
                 }
                 .zipWith(
                     Observable.interval(
                         0,
                         1500,
-                        TimeUnit.MILLISECONDS
+                        TimeUnit.MILLISECONDS,
                     )
                 ) { item, _ ->
                     item
@@ -62,7 +61,7 @@ internal class RepoDetailsViewModel @Inject constructor(
 
     private fun onSuccess(data: MonthStat) {
         _progress.value = false
-        _Monthly_commits.value = data
+        _monthStat.value = data
     }
 
     private fun onError(error: Throwable) {
@@ -73,7 +72,7 @@ internal class RepoDetailsViewModel @Inject constructor(
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-internal fun List<Commit>.toMonthStats(): List<MonthStat> {
+internal fun List<CommitData>.toMonthStats(): List<MonthStat> {
     val map = this.sortedBy { it.date }
         .groupBy { it.date.getMonthName() }
         .mapValues { it.value.size }

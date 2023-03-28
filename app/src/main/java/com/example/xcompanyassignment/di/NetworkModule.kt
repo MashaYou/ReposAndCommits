@@ -5,6 +5,7 @@ import com.example.xcompanyassignment.data.remote.RepositoriesApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -15,23 +16,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 internal object NetworkModule {
 
     private const val baseUrl = "https://api.github.com/"
     private val DEFAULT_TIMEOUT_MS = TimeUnit.SECONDS.toMillis(30)
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideRetrofitApi(retrofit: Retrofit): RepositoriesApi =
         retrofit.create(RepositoriesApi::class.java)
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideRetrofitBuilder(httpClient: OkHttpClient): Retrofit {
         val gson = GsonBuilder()
-            .setLenient().create()
+            .setLenient()
+            .create()
 
         return Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -41,9 +43,8 @@ internal object NetworkModule {
             .build()
     }
 
-
     @Provides
-    @Singleton
+    @Reusable
     fun provideHttpManager(
         loggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient {
@@ -54,7 +55,7 @@ internal object NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor {
             it.chunked(2048).forEach { logMessage ->

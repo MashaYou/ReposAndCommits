@@ -12,8 +12,8 @@ import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 internal object AppModule {
 
     @ApplicationContext

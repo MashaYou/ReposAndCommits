@@ -3,6 +3,8 @@ package com.example.xcompanyassignment.data.remote
 import com.google.gson.annotations.SerializedName
 
 internal class CommitDetailsDto(
+    @SerializedName("sha")
+    val sha: String,
 
     @SerializedName("commit")
     val commit: CommitDto,
