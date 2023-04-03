@@ -1,9 +1,5 @@
 package com.example.xcompanyassignment.data.remote
 
-import com.example.xcompanyassignment.data.toData
-import com.example.xcompanyassignment.domain.CommitData
-import com.example.xcompanyassignment.domain.RepoData
-import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import javax.inject.Inject
